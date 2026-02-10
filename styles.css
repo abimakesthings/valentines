@@ -1,0 +1,69 @@
+/* Make height reliable */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Side background */
+body {
+  background: #f3f4f6; /* gutter color */
+  display: flex;
+  justify-content: center;
+}
+
+/* The mobile-shaped app */
+#app {
+  width: 100%;
+  max-width: 420px;   
+  height: 100dvh; 
+  background: #EEE1D7;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#wall-container {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  flex: 1 1 35%;
+  height: 35%;
+}
+
+#wall {
+  width: 100%;
+  object-fit: cover; 
+}
+
+#counter-container {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  flex: 0 1 40%;
+  height: 40%;
+  background: #f2c789;
+}
+
+#counter {
+  width: 100%;
+  object-fit: cover; 
+}
+
+#inventory {
+  background-color: #FFE8C2;
+  flex: 0 0 120px;  
+  border-top: solid 1px #90634E;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px;
+}
+
+.inventory-slot {
+  background-color: #F5D8AC;
+  height: 80px;
+  width: 80px;
+  border-radius: 12px;
+  flex: 0 1 80px;
+  min-width: 56px;
+}
