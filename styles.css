@@ -26,7 +26,6 @@ body {
   width: 100%;
   align-items: flex-start;
   flex: 1 1 35%;
-  height: 35%;
   background-image: url(wall.PNG);
   background-size: cover;
   justify-content: space-between;
@@ -59,8 +58,7 @@ body {
   display: flex;
   width: 100%;
   align-items: flex-start;
-  flex: 0 1 40%;
-  height: 40%;
+  flex: 0 1 35%;
   background: #f2c789;
   z-index: 1;
   min-height: 0;
@@ -171,16 +169,16 @@ body {
 }
 
 #inventory-dough {
-  height: 32px;
+  height: 36px;
 }
 
 #inventory-strawberry {
-  height: 30px;
+  height: 34px;
   padding-top: 8px;
 }
 
 #inventory-butter{
-  height: 32px;
+  height: 36px;
   padding-top: 8px;
 }
 
