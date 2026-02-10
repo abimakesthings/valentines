@@ -86,7 +86,7 @@ body {
 .pie {
   position: absolute;
   width: 80%;
-  min-width: 280px;
+  min-width: 330px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
