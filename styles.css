@@ -35,10 +35,11 @@ body {
 
 #background-left {
   padding-top: 20px;
-  width: 160px;
   z-index: 1;
-  flex: 0 1 160px;
+  flex: 0 1 auto;
   min-width: 0;
+  max-height: 70%;
+  max-width: 160px;
 }
 
 #window {
@@ -47,6 +48,7 @@ body {
   flex: 0 1;
   align-self: center;
   padding-bottom: 20px;
+  max-height: 100%; 
 }
 
 #cat-happy{
@@ -86,6 +88,18 @@ body {
   height: 80px;
   width: 80px;
   border-radius: 12px;
-  flex: 0 1 80px;
   min-width: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.inventory-item {
+  width: auto;
+  max-height: 28px;
+}
+
+.inventory-label {
+  margin: 8px 0 0 0;
 }
