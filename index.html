@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
     <title>Let's bake!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
   </head>
 
@@ -22,19 +25,27 @@
       </section>
       <section id="inventory">
         <div class="inventory-slot">
-          <img class="inventory-item" id="inventory-dough" src="inventory-dough.PNG"/>
+          <div class="inventory-item-container">
+            <img class="inventory-item" id="inventory-dough" src="inventory-dough.PNG"/>
+          </div>
           <p class="inventory-label">Dough</p>
         </div>
         <div class="inventory-slot">
-          <img class="inventory-item" id="inventory-strawberry" src="inventory-strawberry.PNG"/>
-          <p class="inventory-label">Strawberries</p>
+          <div class="inventory-item-container">
+            <img class="inventory-item" id="inventory-strawberry" src="inventory-strawberry.PNG"/>
+          </div>
+          <p class="inventory-label">Straw-<br>berries</p>
         </div>
         <div class="inventory-slot">
-          <img class="inventory-item" id="inventory-butter" src="inventory-butter.PNG"/>
+          <div class="inventory-item-container">
+            <img class="inventory-item" id="inventory-butter" src="inventory-butter.PNG"/>
+            </div>
           <p class="inventory-label">Butter</p>
         </div>
         <div class="inventory-slot">
-          <img class="inventory-item" id="inventory-sugar" src="inventory-sugar.PNG"/>
+          <div class="inventory-item-container">
+            <img class="inventory-item" id="inventory-sugar" src="inventory-sugar.PNG"/>
+          </div>
           <p class="inventory-label">Sugar</p>
         </div>
       </section>

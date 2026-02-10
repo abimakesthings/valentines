@@ -1,17 +1,14 @@
-/* Make height reliable */
 html, body {
   height: 100%;
   margin: 0;
 }
 
-/* Side background */
 body {
   background: #f3f4f6; /* gutter color */
   display: flex;
   justify-content: center;
 }
 
-/* The mobile-shaped app */
 #app {
   width: 100%;
   max-width: 420px;   
@@ -64,6 +61,7 @@ body {
   height: 40%;
   background: #f2c789;
   z-index: 1;
+  min-height: 0;
 }
 
 #counter {
@@ -74,7 +72,7 @@ body {
 
 #inventory {
   background-color: #FFE8C2;
-  flex: 0 0 120px;  
+  flex: 0 0 150px;  
   border-top: solid 1px #90634E;
   display: flex;
   align-items: center;
@@ -85,21 +83,51 @@ body {
 
 .inventory-slot {
   background-color: #F5D8AC;
-  height: 80px;
+  height: 102px;
   width: 80px;
   border-radius: 12px;
   min-width: 56px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   flex-direction: column;
+  padding-top: 6px;
+}
+
+.inventory-item-container {
+  height: 56px;
+  display: flex;
+  align-items: center;
 }
 
 .inventory-item {
   width: auto;
-  max-height: 28px;
+}
+
+#inventory-dough {
+  height: 28px;
+}
+
+#inventory-strawberry {
+  height: 26px;
+  padding-top: 8px;
+}
+
+#inventory-butter{
+  height: 28px;
+  padding-top: 8px;
+}
+
+#inventory-sugar {
+  height: 48px;
+  padding-bottom: 2px;
 }
 
 .inventory-label {
   margin: 8px 0 0 0;
+  font-family: 'Indie Flower' ,'Arial', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 100%;
+  color: #4f301f;
 }
