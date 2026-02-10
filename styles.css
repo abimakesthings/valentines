@@ -1,12 +1,14 @@
 html, body {
   height: 100%;
   margin: 0;
+  overflow: hidden;
 }
 
 body {
   background: #f3f4f6; /* gutter color */
   display: flex;
   justify-content: center;
+  overflow: hidden;
 }
 
 #app {
@@ -169,16 +171,16 @@ body {
 }
 
 #inventory-dough {
-  height: 28px;
+  height: 32px;
 }
 
 #inventory-strawberry {
-  height: 26px;
+  height: 30px;
   padding-top: 8px;
 }
 
 #inventory-butter{
-  height: 28px;
+  height: 32px;
   padding-top: 8px;
 }
 
