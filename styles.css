@@ -28,11 +28,30 @@ body {
   align-items: flex-start;
   flex: 1 1 35%;
   height: 35%;
+  background-image: url(wall.PNG);
+  background-size: cover;
+  justify-content: space-between;
 }
 
-#wall {
-  width: 100%;
-  object-fit: cover; 
+#background-left {
+  padding-top: 20px;
+  width: 160px;
+  z-index: 1;
+  flex: 0 1 160px;
+  min-width: 0;
+}
+
+#window {
+  width: 60%;
+  display: flex;
+  flex: 0 1;
+  align-self: center;
+  padding-bottom: 20px;
+}
+
+#cat-happy{
+  width: 166px;
+  height: 189px;
 }
 
 #counter-container {
@@ -42,11 +61,13 @@ body {
   flex: 0 1 40%;
   height: 40%;
   background: #f2c789;
+  z-index: 1;
 }
 
 #counter {
   width: 100%;
   object-fit: cover; 
+  margin-top: -60px;
 }
 
 #inventory {
@@ -57,6 +78,7 @@ body {
   align-items: center;
   gap: 16px;
   padding: 0 24px;
+  z-index: 2;
 }
 
 .inventory-slot {
