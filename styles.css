@@ -23,7 +23,7 @@ body {
 
 .screen {
   display: none;
-  height: 100vh;
+  height: 100%;
 }
 
 .screen.active {
