@@ -1,3 +1,21 @@
+/* Get and display custom name */
+const params = new URLSearchParams(window.location.search);
+const recipientName = params.get("name");
+
+if (recipientName) {
+  document.getElementById("name-text").textContent = recipientName + ",";
+}
+
+/* Start game */
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("start-bake").addEventListener("click", function () {
+    document.getElementById("screen-intro").classList.remove("active");
+    document.getElementById("screen-game").classList.add("active");
+  });
+});
+
+
+/* Game drag and drop behavior */
 
 interact('#pie-container').dropzone({
   accept: '#inventory-dough, #inventory-butter, #inventory-strawberry, #inventory-sugar',

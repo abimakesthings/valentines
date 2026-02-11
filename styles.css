@@ -21,12 +21,69 @@ body {
   overflow: hidden;
 }
 
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: flex; 
+  height: 100%;
+}
+
+/* screen intro */
+
+#screen-intro {
+  width: 100%;
+  background-image: url(assets/intro/intro-bg.PNG);
+  background-size: cover;
+  align-items: center;
+  background-position: top;
+  flex-direction: column;
+}
+
+#text-container {
+  margin-top: 210px;
+  width: 80%;
+}
+
+h1 {
+  font-family: "Great Vibes";
+  text-align: center;
+  font-size: 4em;
+  color: #4f301f;
+  margin: 0;
+  font-weight: 700;
+  transform: rotate(-10deg);
+}
+
+button {
+  height: 48px;
+  font-family: 'Indie Flower', 'Arial', sans-serif;
+  font-size: 24px;
+  background-color: #e7ae92;
+  color: #4f301f;
+  margin-top: 60px;
+  padding: 0 16px;
+}
+
+button:hover {
+  background-color: #e1a793;
+  cursor: pointer;
+}
+
+
+/* screen game */
+
+#screen-game {
+  flex-direction: column;
+}
+
 #wall-container {
   display: flex;
   width: 100%;
   align-items: flex-start;
   flex: 1 1 35%;
-  background-image: url(wall.PNG);
+  background-image: url(assets/game/wall.PNG);
   background-size: cover;
   justify-content: space-between;
 }
@@ -74,13 +131,13 @@ body {
 
 #pie-container {
   max-width: 100%;
-  height: 200px;
+  height: 180px;
   position: relative;
   width: 50%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  min-width: 250px;
+  min-width: 200px;
 }
 
 .pie {
