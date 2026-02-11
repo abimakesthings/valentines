@@ -14,18 +14,31 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+/* Check if all ingredients have been used*/
+function allSlotsHidden(i) {
+  return [...document.querySelectorAll(`#inventory-slots-${i} .inventory-item`)]
+    .every(el => el.classList.contains("hidden"));
+}
+
+function checkSlideInventory() {
+  if (allSlotsHidden(1)) {
+    document.getElementById("inventory-slots-container").classList.add("slide");
+  }
+  if (allSlotsHidden(2)) {
+    document.getElementById("inventory").classList.add("slide");
+     setTimeout(() => { document.getElementById("bake-in-oven").classList.remove("hidden");}, 300);
+  }
+}
+
 
 /* Game drag and drop behavior */
 
 interact('#pie-container').dropzone({
-  accept: '#inventory-dough, #inventory-butter, #inventory-strawberry, #inventory-sugar',
+  accept: '#inventory-dough, #inventory-butter, #inventory-strawberry, #inventory-sugar, #inventory-crust',
   // Require a 75% element overlap for a drop to be possible
   overlap: 0.75,
 
-  ondropactivate: function (event) {
-   /* event.target.classList.add('')*/
-  },
-
+  
   ondrop: function (event) {
     if (event.relatedTarget.id === 'inventory-dough') {
       document.getElementById('inventory-dough').classList.add('hidden')
@@ -59,6 +72,11 @@ interact('#pie-container').dropzone({
         document.getElementById('pie-sugar').classList.remove('hidden')
       }   
     }
+    if (event.relatedTarget.id === 'inventory-crust') {
+      document.getElementById('inventory-crust').classList.add('hidden')
+      document.getElementById('pie-crust').classList.remove('hidden')
+    }
+    checkSlideInventory();
   }
 })
 

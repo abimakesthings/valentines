@@ -33,6 +33,7 @@
         <section id="counter-container">
           <img id="counter" src="assets/game/counter.PNG"/>
           <div id="pie-container">
+            <img class="pie hidden" id="pie-crust" src="assets/game/pie-crust.PNG"/>
             <img class="pie hidden" id="pie-baked" src="assets/game/pie-baked.PNG"/>
             <img class="pie hidden" id="pie-sugar" src="assets/game/pie-sugar.PNG"/>
             <img class="pie hidden" id="pie-butter" src="assets/game/pie-butter.PNG"/>  
@@ -44,32 +45,47 @@
           </div>
         </section>
         <section id="inventory">
-          <div class="inventory-slot">
-            <div class="inventory-item-container">
-              <img class="inventory-item" id="inventory-dough" src="assets/game/inventory-dough.PNG"/>
-            </div>
-            <p class="inventory-label">Dough</p>
-          </div>
-          <div class="inventory-slot">
-            <div class="inventory-item-container">
-              <img class="inventory-item" id="inventory-strawberry" src="assets/game/inventory-strawberry.PNG"/>
-            </div>
-            <p class="inventory-label">Straw-<br>berries</p>
-          </div>
-          <div class="inventory-slot">
-            <div class="inventory-item-container">
-              <img class="inventory-item" id="inventory-butter" src="assets/game/inventory-butter.PNG"/>
+          <p class="inventory-label" id="instructions">Drag ingredients onto pie</p>
+          <div id="inventory-slots-container">
+            <div class="inventory-slots" id="inventory-slots-1">
+              <div class="inventory-slot">
+                <div class="inventory-item-container">
+                  <img class="inventory-item" id="inventory-dough" src="assets/game/inventory-dough.PNG"/>
+                </div>
+                <p class="inventory-label">Dough</p>
               </div>
-            <p class="inventory-label">Butter</p>
-          </div>
-          <div class="inventory-slot">
-            <div class="inventory-item-container">
-              <img class="inventory-item" id="inventory-sugar" src="assets/game/inventory-sugar.PNG"/>
+              <div class="inventory-slot">
+                <div class="inventory-item-container">
+                  <img class="inventory-item" id="inventory-strawberry" src="assets/game/inventory-strawberry.PNG"/>
+                </div>
+                <p class="inventory-label">Straw-<br>berries</p>
+              </div>
+              <div class="inventory-slot">
+                <div class="inventory-item-container">
+                  <img class="inventory-item" id="inventory-butter" src="assets/game/inventory-butter.PNG"/>
+                  </div>
+                <p class="inventory-label">Butter</p>
+              </div>
+              <div class="inventory-slot">
+                <div class="inventory-item-container">
+                  <img class="inventory-item" id="inventory-sugar" src="assets/game/inventory-sugar.PNG"/>
+                </div>
+                <p class="inventory-label">Sugar</p>
+              </div>
             </div>
-            <p class="inventory-label">Sugar</p>
+            <div class="inventory-slots" id="inventory-slots-2">
+              <div class="inventory-slot">
+                <div class="inventory-item-container">
+                  <img class="inventory-item" id="inventory-crust" src="assets/game/inventory-crust.PNG"/>
+                </div>
+                <p class="inventory-label">Crust</p>
+              </div>
+            </div>
           </div>
         </section>
       </section>
+      <!--Inventory end -->
+      <button id="bake-in-oven" class="hidden">Bake in oven</button>
     </main>
     <script src="main.js"></script>
   </body>
