@@ -34,7 +34,7 @@ body {
 
 #screen-intro {
   width: 100%;
-  background-image: url(assets/intro/intro-bg.PNG);
+  background-image: url(assets/intro/intro-bg-2.PNG);
   background-size: cover;
   align-items: center;
   background-position: top;
@@ -42,8 +42,8 @@ body {
 }
 
 #text-container {
-  margin-top: 210px;
-  width: 80%;
+  margin-top: 200px;
+  width: 85%;
 }
 
 h1 {
@@ -62,7 +62,7 @@ button {
   font-size: 24px;
   background-color: #e7ae92;
   color: #4f301f;
-  margin-top: 60px;
+  margin-top: 36px;
   padding: 0 16px;
 }
 
