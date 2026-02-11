@@ -221,7 +221,7 @@ button:hover {
 }
 
 #inventory-slots-container.slide {
-   transform: translateX(-100%);
+   transform: translateX(-50%);
 } 
 
 .inventory-slots {
@@ -230,6 +230,7 @@ button:hover {
   gap: 16px;
   padding: 16px 24px;
   max-width: 100%;
+  flex: 1;
 }
 
 #instructions {
