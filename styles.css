@@ -253,6 +253,10 @@ button:hover {
   width: auto;
 }
 
+#inventory-slots-2 .inventory-slot {
+  flex: 0 1 25%;
+}
+
 .inventory-item-container {
   height: 56px;
   display: flex;
