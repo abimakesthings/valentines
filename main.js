@@ -124,13 +124,134 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("pie-oven-container").style.opacity = "0%";
     }, 4500); 
     setTimeout(() => {
-      document.getElementById("screen-end").classList.add("active");
+      document.getElementById("screen-question").classList.add("active");
     }, 6500); 
     setTimeout(() => {
-      document.getElementById("screen-end").classList.add("slide");
+      document.getElementById("screen-question").classList.add("slide");
      }, 6600); 
     setTimeout(() => {
       document.getElementById("screen-game").classList.remove("active");
      }, 8500); 
+  });
+
+  /*end screen*/
+  document.querySelectorAll(".decision").forEach(btn => {
+    btn.addEventListener("click", function () {
+      document.getElementById("screen-end").classList.add("active");
+      setTimeout(() => {
+        document.getElementById("screen-end").classList.add("slide");
+      }, 100);
+      setTimeout(() => {
+        document.getElementById("screen-question").classList.remove("active", "slide");
+      }, 3000);
+    });
+  });
+  
+  const screenEnd = document.getElementById("screen-end");
+
+  document.getElementById("yes").addEventListener("click", () => {
+    screenEnd.dataset.state = "accepted";
+  });
+
+  document.getElementById("no").addEventListener("click", () => {
+    screenEnd.dataset.state = "rejected";
+    setTimeout(() => {
+      document.getElementById("cat-sad").classList.add("grow");
+    }, 2000);
+  });
+
+});
+
+/* RESET GAME */
+
+function resetGame() {
+
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active", "slide"));
+  document.getElementById("screen-intro").classList.add("active");
+
+  const screenEnd = document.getElementById("screen-end");
+  delete screenEnd.dataset.state;                 // remove accepted/rejected
+  screenEnd.classList.remove("slide");       
+
+
+  document.getElementById("cat-sad").classList.remove("grow");   // reset grow animation (so it can replay)
+  // force reflow for animation
+  void document.getElementById("cat-sad").offsetWidth;
+
+  // --- Question screen ---
+  document.getElementById("screen-question").classList.remove("slide");
+
+  // --- Inventory UI ---
+  document.getElementById("inventory-slots-container").classList.remove("slide");
+  document.getElementById("inventory").classList.remove("slide");
+  document.getElementById("bake-in-oven").classList.add("hidden");
+
+  // --- Oven / timer ---
+  const ovenContainer = document.getElementById("pie-oven-container");
+  ovenContainer.classList.add("hidden");
+  ovenContainer.classList.remove("slide");
+  ovenContainer.style.opacity = ""; // back to CSS default
+
+  document.getElementById("oven-filled").style.opacity = "0";
+
+  const timerHand = document.getElementById("timer-hand");
+  timerHand.style.transform = "rotate(0deg)";
+
+  // --- Pie layers reset ---
+  const showOnly = ["pie-empty"]; // only visible at start
+  const pieIds = [
+    "pie-crust","pie-baked","pie-sugar","pie-butter","pie-jam",
+    "pie-sugar-no-jam","pie-butter-no-jam","pie-dough","pie-empty"
+  ];
+  pieIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (showOnly.includes(id)) el.classList.remove("hidden");
+    else el.classList.add("hidden");
+  });
+
+  // --- Inventory items reset (unhide + reset drag position) ---
+  document.querySelectorAll(".inventory-item").forEach(item => {
+    item.classList.remove("hidden");
+    item.style.transform = "translate(0px, 0px)";
+    item.removeAttribute("data-x");
+    item.removeAttribute("data-y");
+  });
+
+  // Optional: scroll to top if mobile browser moved
+  window.scrollTo(0, 0);
+}
+
+
+document.getElementById("replay").addEventListener("click", resetGame);
+
+/* SHARE SCREEN */
+
+document.getElementById("share").addEventListener("click", function (){
+  document.getElementById("screen-share").classList.add("active");
+  setTimeout(() => {
+    document.getElementById("screen-share").classList.add("slide");
+   }, 100);
+
+  setTimeout(() => {
+    document.getElementById("screen-end").classList.remove("active", "slide");
+  }, 3000);
+});
+
+const btn = document.getElementById("copy-link");
+
+btn.addEventListener("click", () => {
+  const name = document.getElementById("name-input").value.trim();
+  const baseUrl = "https://abimakesthings.github.io/valentines/";
+  const shareUrl = name
+    ? `${baseUrl}?name=${encodeURIComponent(name)}`
+    : baseUrl;
+
+  navigator.clipboard.writeText(shareUrl).then(() => {
+    btn.classList.add("copied");
+
+    setTimeout(() => {
+      btn.classList.remove("copied");
+    }, 2000);
   });
 });

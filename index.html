@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Great+Vibes&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
@@ -91,17 +90,77 @@
         </section>
         <button class="hidden" id="bake-in-oven">Bake in oven</button>
       </section>
-      <section id="screen-end" class="screen">
+      <section id="screen-question" class="screen">
         <h1 class="name-text" id="name-text-end"></h1>
         <img id="pie-cloth" src="assets/end/pie-cloth.PNG"/>
         <div id="button-group">
-          <button>Yes</button>
-          <button>No</button>
+          <button class="decision" id="yes">Yes</button>
+          <button class="decision" id="no">No</button>
         </div>
         <div id="roses-container">
             <img id="rose-left" src="assets/end/rose-left.PNG"/>
             <img id="rose-right" src="assets/end/rose-right.PNG"/>
         </div> 
+      </section>
+      <section id="screen-end" class="screen">
+        <div class="cat-container happy">
+          <img id="hearts" src="assets/end/hearts.gif">
+          <img id="cat-happy" src="assets/end/cat-happy.PNG">
+        </div>
+        <div class="cat-container sad">
+          <img id="cat-sad" src="assets/end/cat-angry.PNG">
+        </div>
+        <h1 class="happy">You've got great taste</h1>
+        <h2 class="happy">Happy Valentine's Day!</h2>
+        <h1 class="sad">Wrong answer</h1>
+        <h2 class="sad">You sure about that?</h2>
+        <div id="button-container">
+          <button id="share">Share</button>
+          <button id="replay">Replay</button>
+        </div>
+        <div class="footer">
+          <p>Made with love by @abi.makes.things</p>
+          <div class="footer-links">
+            <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/@abi.makes.things">
+              <img src="assets/end/youtube.jpg"/>
+              Youtube
+            </a>
+            <a target="_blank"rel="noopener noreferrer" href="https://www.instagram.com/abi.makes.things">
+              <img src="assets/end/insta.jpg"/>
+              Instagram
+            </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="screen-share" class="screen">
+        <h3>Share<br/>with a loved one</h3>  
+        <div id="input-container">
+          <label for="name-input">Recipient name</label>
+         <input 
+          type="text" 
+          id="name-input" 
+          placeholder="Name to appear in message"
+          maxlength="20"
+        />
+        </div>
+        <button id="copy-link">
+          <span id="copy-text">Copy link</span>
+          <span id="check">✓ Link copied</span>
+        </button>
+        <div class="footer">
+          <p>Made with love by @abi.makes.things</p>
+          <div class="footer-links">
+            <a href="https://www.youtube.com/@abi.makes.things">
+              <img src="assets/end/youtube.jpg"/>
+              Youtube
+            </a>
+            <a href="https://www.instagram.com/abi.makes.things">
+              <img src="assets/end/insta.jpg"/>
+              Instagram
+            </a>
+            </div>
+          </div>
       </section>
     </main>
     <script src="main.js"></script>
