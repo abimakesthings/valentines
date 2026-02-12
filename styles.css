@@ -541,6 +541,10 @@ button:hover {
 
 /* SCREEN SHARE */
 
+#screen-share {
+  outline: solid 1px #4f301f; 
+}
+
 #screen-share.slide{
   transform: translateX(0%);
 }

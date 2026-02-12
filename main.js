@@ -125,13 +125,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 4500); 
     setTimeout(() => {
       document.getElementById("screen-question").classList.add("active");
-    }, 6500); 
+    }, 6000); 
     setTimeout(() => {
       document.getElementById("screen-question").classList.add("slide");
-     }, 6600); 
+     }, 6100); 
     setTimeout(() => {
       document.getElementById("screen-game").classList.remove("active");
-     }, 8500); 
+     }, 9000); 
   });
 
   /*end screen*/
