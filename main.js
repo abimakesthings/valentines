@@ -3,7 +3,8 @@ const params = new URLSearchParams(window.location.search);
 const recipientName = params.get("name");
 
 if (recipientName) {
-  document.getElementById("name-text").textContent = recipientName + ",";
+  document.querySelectorAll(".name-text")
+    .forEach(el => el.textContent = recipientName + ",");
 }
 
 /* Start game */
@@ -75,6 +76,7 @@ interact('#pie-container').dropzone({
     if (event.relatedTarget.id === 'inventory-crust') {
       document.getElementById('inventory-crust').classList.add('hidden')
       document.getElementById('pie-crust').classList.remove('hidden')
+      
     }
     checkSlideInventory();
   }
@@ -108,3 +110,27 @@ function resetPosition(el) {
   el.removeAttribute('data-x')
   el.removeAttribute('data-y')
 }
+
+/* Bake */
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("bake-in-oven").addEventListener("click", function () {
+    document.getElementById("pie-oven-container").classList.remove("hidden");
+    document.getElementById("pie-oven-container").classList.add("slide");
+    document.getElementById("bake-in-oven").classList.add("hidden");
+    document.getElementById("oven-filled").style.opacity = "1";
+    document.getElementById("timer-hand").style.transform = "rotate(360deg)"; //3s delay
+    setTimeout(() => {
+      document.getElementById("pie-baked").classList.remove("hidden");
+      document.getElementById("pie-oven-container").style.opacity = "0%";
+    }, 4500); 
+    setTimeout(() => {
+      document.getElementById("screen-end").classList.add("active");
+    }, 6500); 
+    setTimeout(() => {
+      document.getElementById("screen-end").classList.add("slide");
+     }, 6600); 
+    setTimeout(() => {
+      document.getElementById("screen-game").classList.remove("active");
+     }, 8500); 
+  });
+});

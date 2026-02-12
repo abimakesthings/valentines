@@ -19,7 +19,7 @@
       <!--- Intro screen -->
       <section id="screen-intro" class="screen active">
         <div id="text-container">
-          <h1 id="name-text"></h1>
+          <h1 class="name-text"></h1>
           <h1>Something sweet is waiting</h1>
         </div>
         <button id="start-bake">Let's bake</button>
@@ -33,6 +33,12 @@
         <section id="counter-container">
           <img id="counter" src="assets/game/counter.PNG"/>
           <div id="pie-container">
+            <div class="pie hidden" id="pie-oven-container">
+              <img class="pie-oven" src="assets/game/oven-empty.PNG"/>
+              <img class="pie-oven" id="oven-filled" src="assets/game/oven-filled.png"/>
+              <img id="timer-base" src="assets/game/timer-base.PNG"/>
+              <img id="timer-hand" src="assets/game/timer-hand.PNG"/>
+            </div>
             <img class="pie hidden" id="pie-crust" src="assets/game/pie-crust.PNG"/>
             <img class="pie hidden" id="pie-baked" src="assets/game/pie-baked.PNG"/>
             <img class="pie hidden" id="pie-sugar" src="assets/game/pie-sugar.PNG"/>
@@ -83,9 +89,20 @@
             </div>
           </div>
         </section>
+        <button class="hidden" id="bake-in-oven">Bake in oven</button>
       </section>
-      <!--Inventory end -->
-      <button id="bake-in-oven" class="hidden">Bake in oven</button>
+      <section id="screen-end" class="screen">
+        <h1 class="name-text" id="name-text-end"></h1>
+        <img id="pie-cloth" src="assets/end/pie-cloth.PNG"/>
+        <div id="button-group">
+          <button>Yes</button>
+          <button>No</button>
+        </div>
+        <div id="roses-container">
+            <img id="rose-left" src="assets/end/rose-left.PNG"/>
+            <img id="rose-right" src="assets/end/rose-right.PNG"/>
+        </div> 
+      </section>
     </main>
     <script src="main.js"></script>
   </body>
