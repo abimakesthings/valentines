@@ -57,10 +57,6 @@ const Sound = (() => {
   return { unlock, play, stop, stopAll };
 })();
 
-document.addEventListener("pointerup", () => Sound.flushQueue());
-document.addEventListener("touchend", () => Sound.flushQueue());
-
-
 /* Get and display custom name */
 const params = new URLSearchParams(window.location.search);
 const recipientName = params.get("name");
