@@ -1,4 +1,4 @@
-// Sound manager - Better priming strategy
+// Sound manager - fix mobile chrome sound bug not playing
 const Sound = (() => {
   let audioContext = null;
   let unlocked = false;
@@ -6,18 +6,15 @@ const Sound = (() => {
 
   function unlock() {
     if (unlocked) {
-      console.log('Already unlocked, skipping');
       return;
     }
-
-    console.log('Starting unlock...');
 
     // Create AudioContext
     if (!audioContext) {
       try {
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
       } catch(e) {
-        console.log('AudioContext failed:', e);
+        // AudioContext creation failed
       }
     }
 
@@ -30,7 +27,6 @@ const Sound = (() => {
     document.querySelectorAll('audio').forEach(audio => {
       audioElements[audio.id] = audio;
       audio.load(); // Just load, don't play
-      console.log('Loaded:', audio.id);
     });
 
     // Play ONE silent audio to unlock (just sound-unlock)
@@ -42,26 +38,22 @@ const Sound = (() => {
         p.then(() => {
           unlockAudio.pause();
           unlockAudio.currentTime = 0;
-          console.log('Unlock audio played');
         }).catch(() => {
-          console.log('Unlock audio failed');
+          // Unlock audio failed
         });
       }
     }
 
     unlocked = true;
-    console.log('All audio unlocked!');
   }
 
   function play(id, volume = 1) {
     const a = audioElements[id] || document.getElementById(id);
     if (!a) {
-      console.log('Audio not found:', id);
       return;
     }
 
     if (!unlocked) {
-      console.log('Not unlocked yet');
       return;
     }
 
@@ -70,9 +62,9 @@ const Sound = (() => {
     
     const promise = a.play();
     if (promise !== undefined) {
-      promise
-        .then(() => console.log('✓ Playing:', id))
-        .catch((error) => console.log('✗ Failed:', id, error.name));
+      promise.catch(() => {
+        // Play failed
+      });
     }
   }
 
