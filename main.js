@@ -2,6 +2,19 @@
 const Sound = (() => {
   let unlocked = false;
 
+  let queued = null;
+
+  function queue(id, volume = 1) {
+    queued = { id, volume };
+  }
+
+  function flushQueue() {
+    if (!queued) return;
+    const { id, volume } = queued;
+    queued = null;
+    play(id, volume);
+  }
+
   function unlock() {
     if (unlocked) return;
     unlocked = true;
@@ -56,8 +69,11 @@ const Sound = (() => {
     });
   }
 
-  return { unlock, play, stop, stopAll };
+  return { unlock, play, stop, stopAll, queue, flushQueue };
 })();
+
+document.addEventListener("pointerup", () => Sound.flushQueue());
+document.addEventListener("touchend", () => Sound.flushQueue());
 
 
 /* Get and display custom name */
@@ -105,12 +121,12 @@ interact('#pie-container').dropzone({
     if (event.relatedTarget.id === 'inventory-dough') {
       document.getElementById('inventory-dough').classList.add('hidden')
       document.getElementById('pie-dough').classList.remove('hidden')
-      Sound.play('sound-crust', 1);
+      Sound.queue('sound-crust', 1);
     }
     if (event.relatedTarget.id === 'inventory-strawberry') {
       document.getElementById('inventory-strawberry').classList.add('hidden')
       document.getElementById('pie-jam').classList.remove('hidden')
-      Sound.play('sound-strawberries', 0.1);
+      Sound.queue('sound-strawberries', 0.1);
       if (!document.getElementById('pie-butter-no-jam').classList.contains('hidden')){
         document.getElementById('pie-butter').classList.remove('hidden')
       }
@@ -120,7 +136,7 @@ interact('#pie-container').dropzone({
     }
     if (event.relatedTarget.id === 'inventory-butter') {
       document.getElementById('inventory-butter').classList.add('hidden')
-      Sound.play('sound-butter', 0.5);
+      Sound.queue('sound-butter', 0.5);
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
          document.getElementById('pie-butter-no-jam').classList.remove('hidden')
       } else {
@@ -129,7 +145,7 @@ interact('#pie-container').dropzone({
     }
     if (event.relatedTarget.id === 'inventory-sugar') {
     document.getElementById('inventory-sugar').classList.add('hidden')
-    Sound.play('sound-sugar', 0.6);
+    Sound.queue('sound-sugar', 0.6);
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
           document.getElementById('pie-sugar-no-jam').classList.remove('hidden')
       } else {
@@ -139,7 +155,7 @@ interact('#pie-container').dropzone({
     if (event.relatedTarget.id === 'inventory-crust') {
       document.getElementById('inventory-crust').classList.add('hidden')
       document.getElementById('pie-crust').classList.remove('hidden')
-      Sound.play('sound-crust');
+      Sound.queue('sound-crust');
     }
     checkSlideInventory();
   }
@@ -339,7 +355,7 @@ btn.addEventListener("click", () => {
 });
 
 document.addEventListener("click", (e) => {
-  if (e.target.tagName === "BUTTON") {
-    Sound.play('button-click', 1);
-  }
+  const btn = e.target.closest("button");
+  if (!btn) return;
+  Sound.play("sound-button-click", 0.3);
 });
