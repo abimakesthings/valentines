@@ -502,6 +502,7 @@ button:hover {
   font-size: 1.5em;
   font-family: 'Great Vibes', cursive;
   color: #4f301f;
+  font-weight: 400;
 }
 
 #button-container {
@@ -592,6 +593,7 @@ button:hover {
   outline: none; 
   color: #4f301f;
   background-color: #ffffFF;
+  font-size: 16px;
 }
 
 #screen-share input:focus-visible {
