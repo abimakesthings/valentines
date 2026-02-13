@@ -1,3 +1,11 @@
+:root {
+  --yellow: #ffffe9;
+  --beige: #EEE1D7;
+  --dark-brown: #4f301f;
+  --pastel-pink: #e7ae92;
+  --pastel-pink-hover: #e1a793;
+}
+
 html, body {
   height: 100%;
   margin: 0;
@@ -8,21 +16,21 @@ body {
   display: flex;
   justify-content: center;
   overflow: hidden;
-  background-color: #ffffe9;
+  background-color: var(--yellow);
 }
 
 #app {
   width: 100%;
   max-width: 420px;   
   height: 100dvh; 
-  background-color: #EEE1D7;
+  background-color: var(--beige);
   background-image: url(assets/game/counter-tall.PNG);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
-  border-left: solid .5px #4f301f;
-  border-right: solid .5px #4f301f;
+  border-left: solid .5px var(--dark-brown);
+  border-right: solid .5px var(--dark-brown);
 }
 
 
@@ -57,7 +65,7 @@ body {
 h1 {
   font-family: "Great Vibes";
   text-align: center;
-  color: #4f301f;
+  color: var(--dark-brown);
   margin: 0;
   font-weight: 700;
 }
@@ -72,16 +80,16 @@ button {
   height: 48px;
   font-family: 'Indie Flower', 'Arial', sans-serif;
   font-size: 24px;
-  background-color: #e7ae92;
-  color: #4f301f;
+  background-color: var(--pastel-pink);
+  color: var(--dark-brown);
   margin-top: 36px;
   padding: 0 16px;
   border-radius: 8px;
-  border: solid 1px #4f301f;
+  border: solid 1px var(--dark-brown);
 }
 
 button:hover {
-  background-color: #e1a793;
+  background-color: var(--pastel-pink-hover);
   cursor: pointer;
 }
 
@@ -347,7 +355,7 @@ button:hover {
   font-weight: 400;
   font-style: normal;
   line-height: 100%;
-  color: #4f301f;
+  color: var(--dark-brown);
   font-size: 20px;
   text-align: center;
 }
@@ -372,7 +380,7 @@ button:hover {
   position: absolute;
   flex-direction: column;
   align-items: center;
-  border-bottom: solid 1px #4f301f;
+  border-bottom: solid 1px var(--dark-brown);
 }
 
 #screen-question.slide{
@@ -501,7 +509,7 @@ button:hover {
 #screen-end h2 {
   font-size: 1.5em;
   font-family: 'Great Vibes', cursive;
-  color: #4f301f;
+  color: var(--dark-brown);
   font-weight: 400;
   margin: 12px 0;
 }
@@ -524,7 +532,7 @@ button:hover {
 .footer p {
   font-family: 'Indie Flower', 'Arial', sans-serif;
   text-align: center;
-  color: #4f301f;
+  color: var(--dark-brown);
 }
 
 .footer-links {
@@ -542,7 +550,7 @@ button:hover {
 .footer a {
   font-family: 'Indie Flower', 'Arial', sans-serif;
   text-align: left;
-  color: #4f301f;
+  color: var(--dark-brown);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -551,7 +559,7 @@ button:hover {
 /* SCREEN SHARE */
 
 #screen-share {
-  outline: solid 1px #4f301f; 
+  outline: solid 1px var(--dark-brown); 
 }
 
 #screen-share.slide{
@@ -561,7 +569,7 @@ button:hover {
 #screen-share h3 {
   font-family: 'Great Vibes', cursive;
   text-align: center;
-  color: #4f301f;
+  color: var(--dark-brown);
   width: 70%;
   font-size: 3em;
   font-weight: 400;
@@ -582,28 +590,28 @@ button:hover {
   margin-bottom: 4px;
   text-align: left;
   width: 70%;
-  color: #4f301f
+  color: var(--dark-brown)
 }
 
 #screen-share input {
-  border: solid 1px #4f301f;
+  border: solid 1px var(--dark-brown);
   height: 42px;
   width: 70%;
   border-radius: 8px;
   padding: 0 12px;
   outline: none; 
-  color: #4f301f;
+  color: var(--dark-brown);
   background-color: #ffffFF;
   font-size: 16px;
 }
 
 #screen-share input:focus-visible {
-  border-color: #4f301f;
+  border-color: var(--dark-brown);
   box-shadow: 0 0 0 2px rgba(79, 48, 31, 0.3);
 }
 
 #screen-share input:focus {
-  border-color: #4f301f;
+  border-color: var(--dark-brown);
 }
 
 #screen-share input::placeholder {
@@ -637,7 +645,6 @@ button:hover {
   display: inline;
 }
 
-
 #bottom {
   position: absolute;
   bottom: 0;
@@ -652,8 +659,8 @@ button:hover {
 }
 
 #screen-share .replay {
-  border: solid 1px #4f301f;
-  color: #4f301f;
+  border: solid 1px var(--dark-brown);
+  color: var(--dark-brown);
   background-color: transparent;
   margin-bottom: 20px;
 }
