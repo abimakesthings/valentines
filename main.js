@@ -234,10 +234,15 @@ function resetGame() {
 }
 
 document.querySelectorAll(".replay").forEach(item => {
-  item.addEventListener("click", resetGame);
+  item.addEventListener("click", () => {
+
+    document.getElementById("sound-fun").pause();
+    document.getElementById("sound-fun").currentTime = 0;
+
+    resetGame();
+  });
+
 });
-
-
 /* SHARE SCREEN */
 
 document.getElementById("share").addEventListener("click", function (){
@@ -285,4 +290,3 @@ document.addEventListener("click", (e) => {
     playSound('button-click', 1);
   }
 });
-
