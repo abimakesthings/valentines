@@ -503,6 +503,7 @@ button:hover {
   font-family: 'Great Vibes', cursive;
   color: #4f301f;
   font-weight: 400;
+  margin: 12px 0;
 }
 
 #button-container {
@@ -511,7 +512,7 @@ button:hover {
 }
 
 #button-container button {
-  margin-top: 24px;
+  margin-top: 16px;
 }
 
 .footer {
