@@ -222,8 +222,10 @@ function resetGame() {
   window.scrollTo(0, 0);
 }
 
+document.querySelectorAll(".replay").forEach(item => {
+  item.addEventListener("click", resetGame);
+});
 
-document.getElementById("replay").addEventListener("click", resetGame);
 
 /* SHARE SCREEN */
 
