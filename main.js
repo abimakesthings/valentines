@@ -1,3 +1,85 @@
+const Sound = (() => {
+  const ids = [
+    "sound-crust",
+    "sound-strawberries",
+    "sound-butter",
+    "sound-sugar",
+    "sound-screen-slide",
+    "sound-success",
+    "sound-oven-slide-in",
+    "sound-timer",
+    "sound-fun",
+    "sound-stab-cat",
+    "sound-button-click",
+  ];
+
+  let unlocked = false;
+
+  function els() {
+    return ids
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
+  }
+
+  function unlock() {
+    if (unlocked) return;
+    unlocked = true;
+
+    // iOS unlock: play() must happen inside a trusted gesture.
+    els().forEach(a => {
+      try {
+        const prevVol = a.volume;
+        a.volume = 0;
+        a.currentTime = 0;
+
+        const p = a.play();
+        if (p) {
+          p.then(() => {
+            a.pause();
+            a.currentTime = 0;
+            a.volume = prevVol;
+          }).catch(() => {
+            // Some files may fail; that's okay—unlock often still succeeds overall.
+            a.volume = prevVol;
+          });
+        } else {
+          a.volume = prevVol;
+        }
+      } catch {}
+    });
+  }
+
+  function play(id, volume = 1) {
+    const a = document.getElementById(id);
+    if (!a) return;
+
+    a.pause();          // helps with rapid replays on iOS
+    a.currentTime = 0;
+    a.volume = volume;
+
+    a.play().catch(() => {
+      // If this fails on mobile, it's almost always "not unlocked yet"
+    });
+  }
+
+  function stop(id) {
+    const a = document.getElementById(id);
+    if (!a) return;
+    a.pause();
+    a.currentTime = 0;
+  }
+
+  function stopAll() {
+    document.querySelectorAll("audio").forEach(a => {
+      a.pause();
+      a.currentTime = 0;
+    });
+  }
+
+  return { unlock, play, stop, stopAll };
+})();
+
+
 /* Get and display custom name */
 const params = new URLSearchParams(window.location.search);
 const recipientName = params.get("name");
@@ -9,8 +91,11 @@ if (recipientName) {
 
 /* Start game */
 document.getElementById("start-bake").addEventListener("click", function () {
+  Sound.unlock();
   document.getElementById("screen-intro").classList.remove("active");
   document.getElementById("screen-game").classList.add("active");
+  document.addEventListener("pointerdown", Sound.unlock, { once: true });
+  document.addEventListener("touchstart", Sound.unlock, { once: true });
 });
 
 /* Check if all ingredients have been used*/
@@ -42,12 +127,12 @@ interact('#pie-container').dropzone({
     if (event.relatedTarget.id === 'inventory-dough') {
       document.getElementById('inventory-dough').classList.add('hidden')
       document.getElementById('pie-dough').classList.remove('hidden')
-      playSound('sound-crust', 1);
+      sound.play('sound-crust', 1);
     }
     if (event.relatedTarget.id === 'inventory-strawberry') {
       document.getElementById('inventory-strawberry').classList.add('hidden')
       document.getElementById('pie-jam').classList.remove('hidden')
-      playSound('sound-strawberries', 0.1);
+      sound.play('sound-strawberries', 0.1);
       if (!document.getElementById('pie-butter-no-jam').classList.contains('hidden')){
         document.getElementById('pie-butter').classList.remove('hidden')
       }
@@ -57,7 +142,7 @@ interact('#pie-container').dropzone({
     }
     if (event.relatedTarget.id === 'inventory-butter') {
       document.getElementById('inventory-butter').classList.add('hidden')
-      playSound('sound-butter', 0.5);
+      sound.play('sound-butter', 0.5);
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
          document.getElementById('pie-butter-no-jam').classList.remove('hidden')
       } else {
@@ -66,7 +151,7 @@ interact('#pie-container').dropzone({
     }
     if (event.relatedTarget.id === 'inventory-sugar') {
     document.getElementById('inventory-sugar').classList.add('hidden')
-    playSound('sound-sugar', 0.6);
+    sound.play('sound-sugar', 0.6);
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
           document.getElementById('pie-sugar-no-jam').classList.remove('hidden')
       } else {
@@ -76,7 +161,7 @@ interact('#pie-container').dropzone({
     if (event.relatedTarget.id === 'inventory-crust') {
       document.getElementById('inventory-crust').classList.add('hidden')
       document.getElementById('pie-crust').classList.remove('hidden')
-      playSound('sound-crust');
+      sound.play('sound-crust');
     }
     checkSlideInventory();
   }
@@ -115,12 +200,12 @@ function resetPosition(el) {
 document.getElementById("bake-in-oven").addEventListener("click", function () {
   document.getElementById("pie-oven-container").classList.remove("hidden");
   document.getElementById("pie-oven-container").classList.add("slide");
-  playSound('sound-oven-slide-in', .1);
+  sound.play('sound-oven-slide-in', .1);
   document.getElementById("bake-in-oven").classList.add("hidden");
   document.getElementById("oven-filled").style.opacity = "1";
   document.getElementById("timer-hand").style.transform = "rotate(360deg)"; //3s delay
   setTimeout(() => {
-    playSound('sound-timer', 1);
+    sound.play('sound-timer', 1);
   }, 2000);  
   setTimeout(() => {
     document.getElementById("pie-baked").classList.remove("hidden");
@@ -131,10 +216,10 @@ document.getElementById("bake-in-oven").addEventListener("click", function () {
   }, 6000); 
   setTimeout(() => {
     document.getElementById("screen-question").classList.add("slide");
-    playSound('sound-screen-slide', 1);
+    sound.play('sound-screen-slide', 1);
    }, 6100); 
   setTimeout(() => {
-      playSound('sound-success', 1);
+      sound.play('sound-success', 1);
    }, 6500);
   setTimeout(() => {
     document.getElementById("screen-game").classList.remove("active");
@@ -147,7 +232,7 @@ document.querySelectorAll(".decision").forEach(btn => {
     document.getElementById("screen-end").classList.add("active");
     setTimeout(() => {
       document.getElementById("screen-end").classList.add("slide");
-      playSound('sound-screen-slide', 1);
+      sound.play('sound-screen-slide', 1);
     }, 100);
     setTimeout(() => {
       document.getElementById("screen-question").classList.remove("active", "slide");
@@ -160,14 +245,14 @@ const screenEnd = document.getElementById("screen-end");
 document.getElementById("yes").addEventListener("click", () => {
   screenEnd.dataset.state = "accepted";
   setTimeout(() => {
-    playSound('sound-fun', 0.4);
+    sound.play('sound-fun', 0.4);
   }, 2000);
 });
 
 document.getElementById("no").addEventListener("click", () => {
   screenEnd.dataset.state = "rejected";
   setTimeout(() => {
-    playSound('sound-stab-cat', .5);
+    sound.play('sound-stab-cat', .5);
     document.getElementById("cat-sad").classList.add("grow");
   }, 2000);
 });
@@ -276,7 +361,7 @@ btn.addEventListener("click", () => {
 });
 
 /* sounds */
-function playSound(id, volume = 1) {
+function sound.play(id, volume = 1) {
   const sound = document.getElementById(id);
   if (!sound) return;
 
@@ -287,6 +372,6 @@ function playSound(id, volume = 1) {
 
 document.addEventListener("click", (e) => {
   if (e.target.tagName === "BUTTON") {
-    playSound('button-click', 1);
+    sound.play('button-click', 1);
   }
 });
