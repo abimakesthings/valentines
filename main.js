@@ -148,6 +148,10 @@ interact('.inventory-item')
     inertia: true,
     autoScroll: true,
     listeners: {
+      start (event) {
+        // ADD THIS - unlock on drag start for mobile
+        Sound.unlock();
+      },
       move: dragMoveListener, 
       end (event) {
       if (!event.dropzone) {
@@ -336,9 +340,17 @@ btn.addEventListener("click", () => {
   });
 });
 
+// ADD THESE - listen for both click AND touch events for buttons
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("button");
   if (!btn) return;
   Sound.unlock();
   Sound.play("sound-button-click", 0.3);
 });
+
+document.addEventListener("touchstart", (e) => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+  Sound.unlock();
+  Sound.play("sound-button-click", 0.3);
+}, { passive: true });
