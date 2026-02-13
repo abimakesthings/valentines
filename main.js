@@ -8,11 +8,9 @@ if (recipientName) {
 }
 
 /* Start game */
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("start-bake").addEventListener("click", function () {
-    document.getElementById("screen-intro").classList.remove("active");
-    document.getElementById("screen-game").classList.add("active");
-  });
+document.getElementById("start-bake").addEventListener("click", function () {
+  document.getElementById("screen-intro").classList.remove("active");
+  document.getElementById("screen-game").classList.add("active");
 });
 
 /* Check if all ingredients have been used*/
@@ -112,55 +110,53 @@ function resetPosition(el) {
 }
 
 /* Bake */
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("bake-in-oven").addEventListener("click", function () {
-    document.getElementById("pie-oven-container").classList.remove("hidden");
-    document.getElementById("pie-oven-container").classList.add("slide");
-    document.getElementById("bake-in-oven").classList.add("hidden");
-    document.getElementById("oven-filled").style.opacity = "1";
-    document.getElementById("timer-hand").style.transform = "rotate(360deg)"; //3s delay
-    setTimeout(() => {
-      document.getElementById("pie-baked").classList.remove("hidden");
-      document.getElementById("pie-oven-container").style.opacity = "0%";
-    }, 4500); 
-    setTimeout(() => {
-      document.getElementById("screen-question").classList.add("active");
-    }, 6000); 
-    setTimeout(() => {
-      document.getElementById("screen-question").classList.add("slide");
-     }, 6100); 
-    setTimeout(() => {
-      document.getElementById("screen-game").classList.remove("active");
-     }, 9000); 
-  });
-
-  /*end screen*/
-  document.querySelectorAll(".decision").forEach(btn => {
-    btn.addEventListener("click", function () {
-      document.getElementById("screen-end").classList.add("active");
-      setTimeout(() => {
-        document.getElementById("screen-end").classList.add("slide");
-      }, 100);
-      setTimeout(() => {
-        document.getElementById("screen-question").classList.remove("active", "slide");
-      }, 3000);
-    });
-  });
-  
-  const screenEnd = document.getElementById("screen-end");
-
-  document.getElementById("yes").addEventListener("click", () => {
-    screenEnd.dataset.state = "accepted";
-  });
-
-  document.getElementById("no").addEventListener("click", () => {
-    screenEnd.dataset.state = "rejected";
-    setTimeout(() => {
-      document.getElementById("cat-sad").classList.add("grow");
-    }, 2000);
-  });
-
+document.getElementById("bake-in-oven").addEventListener("click", function () {
+  document.getElementById("pie-oven-container").classList.remove("hidden");
+  document.getElementById("pie-oven-container").classList.add("slide");
+  document.getElementById("bake-in-oven").classList.add("hidden");
+  document.getElementById("oven-filled").style.opacity = "1";
+  document.getElementById("timer-hand").style.transform = "rotate(360deg)"; //3s delay
+  setTimeout(() => {
+    document.getElementById("pie-baked").classList.remove("hidden");
+    document.getElementById("pie-oven-container").style.opacity = "0";
+  }, 4500); 
+  setTimeout(() => {
+    document.getElementById("screen-question").classList.add("active");
+  }, 6000); 
+  setTimeout(() => {
+    document.getElementById("screen-question").classList.add("slide");
+   }, 6100); 
+  setTimeout(() => {
+    document.getElementById("screen-game").classList.remove("active");
+   }, 9000); 
 });
+
+/*end screen*/
+document.querySelectorAll(".decision").forEach(btn => {
+  btn.addEventListener("click", function () {
+    document.getElementById("screen-end").classList.add("active");
+    setTimeout(() => {
+      document.getElementById("screen-end").classList.add("slide");
+    }, 100);
+    setTimeout(() => {
+      document.getElementById("screen-question").classList.remove("active", "slide");
+    }, 3000);
+  });
+});
+
+const screenEnd = document.getElementById("screen-end");
+
+document.getElementById("yes").addEventListener("click", () => {
+  screenEnd.dataset.state = "accepted";
+});
+
+document.getElementById("no").addEventListener("click", () => {
+  screenEnd.dataset.state = "rejected";
+  setTimeout(() => {
+    document.getElementById("cat-sad").classList.add("grow");
+  }, 2000);
+});
+
 
 /* RESET GAME */
 
@@ -242,6 +238,7 @@ document.getElementById("share").addEventListener("click", function (){
 
 const btn = document.getElementById("copy-link");
 
+/* Add name to link */
 btn.addEventListener("click", () => {
   const name = document.getElementById("name-input").value.trim();
   const baseUrl = "https://abimakesthings.github.io/valentines/";
