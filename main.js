@@ -2,19 +2,6 @@
 const Sound = (() => {
   let unlocked = false;
 
-  let queued = null;
-
-  function queue(id, volume = 1) {
-    queued = { id, volume };
-  }
-
-  function flushQueue() {
-    if (!queued) return;
-    const { id, volume } = queued;
-    queued = null;
-    play(id, volume);
-  }
-
   function unlock() {
     if (unlocked) return;
     unlocked = true;
@@ -33,11 +20,9 @@ const Sound = (() => {
         a.currentTime = 0;
         a.muted = false;
       }).catch(() => {
-        // Even if it fails, we attempted unlock inside a gesture
         a.muted = false;
       });
     } else {
-      // Older browsers: just reset
       a.pause();
       a.currentTime = 0;
       a.muted = false;
@@ -48,7 +33,7 @@ const Sound = (() => {
     const a = document.getElementById(id);
     if (!a) return;
 
-    a.pause();          // helps iOS for rapid replays
+    a.pause();
     a.currentTime = 0;
     a.volume = volume;
 
@@ -69,7 +54,7 @@ const Sound = (() => {
     });
   }
 
-  return { unlock, play, stop, stopAll, queue, flushQueue };
+  return { unlock, play, stop, stopAll };
 })();
 
 document.addEventListener("pointerup", () => Sound.flushQueue());
@@ -118,15 +103,16 @@ interact('#pie-container').dropzone({
 
   
   ondrop: function (event) {
+    Sound.unlock();
     if (event.relatedTarget.id === 'inventory-dough') {
       document.getElementById('inventory-dough').classList.add('hidden')
       document.getElementById('pie-dough').classList.remove('hidden')
-      Sound.queue('sound-crust', 1);
+      Sound.play('sound-crust', 1);
     }
     if (event.relatedTarget.id === 'inventory-strawberry') {
       document.getElementById('inventory-strawberry').classList.add('hidden')
       document.getElementById('pie-jam').classList.remove('hidden')
-      Sound.queue('sound-strawberries', 0.1);
+      Sound.play('sound-strawberries', 0.1);
       if (!document.getElementById('pie-butter-no-jam').classList.contains('hidden')){
         document.getElementById('pie-butter').classList.remove('hidden')
       }
@@ -136,7 +122,7 @@ interact('#pie-container').dropzone({
     }
     if (event.relatedTarget.id === 'inventory-butter') {
       document.getElementById('inventory-butter').classList.add('hidden')
-      Sound.queue('sound-butter', 0.5);
+      Sound.play('sound-butter', 0.5);
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
          document.getElementById('pie-butter-no-jam').classList.remove('hidden')
       } else {
@@ -145,7 +131,7 @@ interact('#pie-container').dropzone({
     }
     if (event.relatedTarget.id === 'inventory-sugar') {
     document.getElementById('inventory-sugar').classList.add('hidden')
-    Sound.queue('sound-sugar', 0.6);
+    Sound.play('sound-sugar', 0.6);
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
           document.getElementById('pie-sugar-no-jam').classList.remove('hidden')
       } else {
@@ -155,7 +141,7 @@ interact('#pie-container').dropzone({
     if (event.relatedTarget.id === 'inventory-crust') {
       document.getElementById('inventory-crust').classList.add('hidden')
       document.getElementById('pie-crust').classList.remove('hidden')
-      Sound.queue('sound-crust');
+      Sound.play('sound-crust');
     }
     checkSlideInventory();
   }
@@ -357,5 +343,6 @@ btn.addEventListener("click", () => {
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("button");
   if (!btn) return;
+  Sound.unlock();
   Sound.play("sound-button-click", 0.3);
 });
