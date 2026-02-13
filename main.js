@@ -42,10 +42,12 @@ interact('#pie-container').dropzone({
     if (event.relatedTarget.id === 'inventory-dough') {
       document.getElementById('inventory-dough').classList.add('hidden')
       document.getElementById('pie-dough').classList.remove('hidden')
+      playSound('sound-crust', 1);
     }
     if (event.relatedTarget.id === 'inventory-strawberry') {
       document.getElementById('inventory-strawberry').classList.add('hidden')
       document.getElementById('pie-jam').classList.remove('hidden')
+      playSound('sound-strawberries', 0.1);
       if (!document.getElementById('pie-butter-no-jam').classList.contains('hidden')){
         document.getElementById('pie-butter').classList.remove('hidden')
       }
@@ -55,7 +57,7 @@ interact('#pie-container').dropzone({
     }
     if (event.relatedTarget.id === 'inventory-butter') {
       document.getElementById('inventory-butter').classList.add('hidden')
-
+      playSound('sound-butter', 0.5);
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
          document.getElementById('pie-butter-no-jam').classList.remove('hidden')
       } else {
@@ -64,7 +66,7 @@ interact('#pie-container').dropzone({
     }
     if (event.relatedTarget.id === 'inventory-sugar') {
     document.getElementById('inventory-sugar').classList.add('hidden')
-
+    playSound('sound-sugar', 0.6);
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
           document.getElementById('pie-sugar-no-jam').classList.remove('hidden')
       } else {
@@ -74,7 +76,7 @@ interact('#pie-container').dropzone({
     if (event.relatedTarget.id === 'inventory-crust') {
       document.getElementById('inventory-crust').classList.add('hidden')
       document.getElementById('pie-crust').classList.remove('hidden')
-      
+      playSound('sound-crust');
     }
     checkSlideInventory();
   }
@@ -113,9 +115,13 @@ function resetPosition(el) {
 document.getElementById("bake-in-oven").addEventListener("click", function () {
   document.getElementById("pie-oven-container").classList.remove("hidden");
   document.getElementById("pie-oven-container").classList.add("slide");
+  playSound('sound-oven-slide-in', .1);
   document.getElementById("bake-in-oven").classList.add("hidden");
   document.getElementById("oven-filled").style.opacity = "1";
   document.getElementById("timer-hand").style.transform = "rotate(360deg)"; //3s delay
+  setTimeout(() => {
+    playSound('sound-timer', 1);
+  }, 2000);  
   setTimeout(() => {
     document.getElementById("pie-baked").classList.remove("hidden");
     document.getElementById("pie-oven-container").style.opacity = "0";
@@ -125,7 +131,11 @@ document.getElementById("bake-in-oven").addEventListener("click", function () {
   }, 6000); 
   setTimeout(() => {
     document.getElementById("screen-question").classList.add("slide");
+    playSound('sound-screen-slide', 1);
    }, 6100); 
+  setTimeout(() => {
+      playSound('sound-success', 1);
+   }, 6500);
   setTimeout(() => {
     document.getElementById("screen-game").classList.remove("active");
    }, 9000); 
@@ -137,6 +147,7 @@ document.querySelectorAll(".decision").forEach(btn => {
     document.getElementById("screen-end").classList.add("active");
     setTimeout(() => {
       document.getElementById("screen-end").classList.add("slide");
+      playSound('sound-screen-slide', 1);
     }, 100);
     setTimeout(() => {
       document.getElementById("screen-question").classList.remove("active", "slide");
@@ -148,11 +159,15 @@ const screenEnd = document.getElementById("screen-end");
 
 document.getElementById("yes").addEventListener("click", () => {
   screenEnd.dataset.state = "accepted";
+  setTimeout(() => {
+    playSound('sound-fun', 0.4);
+  }, 2000);
 });
 
 document.getElementById("no").addEventListener("click", () => {
   screenEnd.dataset.state = "rejected";
   setTimeout(() => {
+    playSound('sound-stab-cat', .5);
     document.getElementById("cat-sad").classList.add("grow");
   }, 2000);
 });
@@ -254,3 +269,20 @@ btn.addEventListener("click", () => {
     }, 2000);
   });
 });
+
+/* sounds */
+function playSound(id, volume = 1) {
+  const sound = document.getElementById(id);
+  if (!sound) return;
+
+  sound.volume = volume;  
+  sound.currentTime = 0;
+  sound.play().catch(() => {});
+}
+
+document.addEventListener("click", (e) => {
+  if (e.target.tagName === "BUTTON") {
+    playSound('button-click', 1);
+  }
+});
+
