@@ -1,4 +1,4 @@
-// Sound manager - Nuclear Chrome fix
+// Sound manager - Fixed priming
 const Sound = (() => {
   let audioContext = null;
   let unlocked = false;
@@ -21,20 +21,33 @@ const Sound = (() => {
       audioContext.resume();
     }
 
-    // CRITICAL: Prime ALL audio elements during this user gesture
+    // CRITICAL: Prime ALL audio elements (except sound-unlock)
     document.querySelectorAll('audio').forEach(audio => {
+      // Skip the unlock sound itself
+      if (audio.id === 'sound-unlock') {
+        audioElements[audio.id] = audio;
+        return;
+      }
+
       audioElements[audio.id] = audio;
       audio.load();
       
       // Play them all silently to unlock (Chrome requirement)
+      const originalVolume = audio.volume;
       audio.volume = 0;
-      audio.play().then(() => {
-        audio.pause();
-        audio.currentTime = 0;
-        console.log('Primed:', audio.id);
-      }).catch(e => {
-        console.log('Prime failed:', audio.id);
-      });
+      const playPromise = audio.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          audio.pause();
+          audio.currentTime = 0;
+          audio.volume = originalVolume;
+          console.log('Primed:', audio.id);
+        }).catch(e => {
+          audio.volume = originalVolume;
+          console.log('Prime failed:', audio.id);
+        });
+      }
     });
 
     unlocked = true;
@@ -101,7 +114,7 @@ if (recipientName) {
 
 /* Start game */
 document.getElementById("start-bake").addEventListener("click", function () {
-  Sound.unlock(); // Force unlock here too
+  // Don't call unlock again - it already happened on first touch/click
   document.getElementById("screen-intro").classList.remove("active");
   document.getElementById("screen-game").classList.add("active");
 });
@@ -178,7 +191,7 @@ interact('.inventory-item')
     autoScroll: true,
     listeners: {
       start(event) {
-        // Unlock at drag start
+        // Unlock at drag start (in case they skipped the start button)
         Sound.unlock();
       },
       move: dragMoveListener, 
