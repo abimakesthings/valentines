@@ -440,7 +440,7 @@ button:hover {
 
 .cat-container {
   width: 100%;
-  height: 340px;
+  height: 290px;
 }
 
 #hearts {
@@ -468,7 +468,7 @@ button:hover {
 }
 
  #cat-sad {
-  top: 99px;
+  top: 50px;
  }
 
 @keyframes catGrow {
@@ -504,6 +504,10 @@ button:hover {
 #button-container {
   gap: 16px;
   display: flex;
+}
+
+#button-container button {
+  margin-top: 24px;
 }
 
 .footer {
