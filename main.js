@@ -1,11 +1,16 @@
-// Sound manager - Fixed priming
+// Sound manager - Only unlock ONCE
 const Sound = (() => {
   let audioContext = null;
   let unlocked = false;
   let audioElements = {};
 
   function unlock() {
-    if (unlocked) return;
+    if (unlocked) {
+      console.log('Already unlocked, skipping');
+      return; // CRITICAL: Don't unlock twice
+    }
+
+    console.log('Starting unlock...');
 
     // Create AudioContext
     if (!audioContext) {
@@ -62,8 +67,8 @@ const Sound = (() => {
     }
 
     if (!unlocked) {
-      console.log('Not unlocked, attempting unlock...');
-      unlock();
+      console.log('Not unlocked yet');
+      return;
     }
 
     a.volume = volume;
@@ -94,12 +99,18 @@ const Sound = (() => {
   return { unlock, play, stop, stopAll };
 })();
 
-// Aggressive unlock on first touch
+// Only unlock on the VERY FIRST interaction
+let hasUnlocked = false;
+
 document.addEventListener("touchstart", () => {
+  if (hasUnlocked) return;
+  hasUnlocked = true;
   Sound.unlock();
 }, { once: true, passive: true });
 
 document.addEventListener("click", () => {
+  if (hasUnlocked) return;
+  hasUnlocked = true;
   Sound.unlock();
 }, { once: true });
 
@@ -114,7 +125,6 @@ if (recipientName) {
 
 /* Start game */
 document.getElementById("start-bake").addEventListener("click", function () {
-  // Don't call unlock again - it already happened on first touch/click
   document.getElementById("screen-intro").classList.remove("active");
   document.getElementById("screen-game").classList.add("active");
 });
@@ -190,10 +200,6 @@ interact('.inventory-item')
     inertia: true,
     autoScroll: true,
     listeners: {
-      start(event) {
-        // Unlock at drag start (in case they skipped the start button)
-        Sound.unlock();
-      },
       move: dragMoveListener, 
       end (event) {
         if (!event.dropzone) {
