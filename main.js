@@ -360,3 +360,8 @@ btn.addEventListener("click", () => {
   });
 });
 
+document.addEventListener("click", (e) => {
+  if (e.target.tagName === "BUTTON") {
+    Sound.play('button-click', 1);
+  }
+});
