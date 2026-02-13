@@ -79,7 +79,7 @@ h1 {
 button {
   height: 48px;
   font-family: 'Indie Flower', 'Arial', sans-serif;
-  font-size: 20px;
+  font-size: 24px;
   background-color: var(--pastel-pink);
   color: var(--dark-brown);
   margin-top: 36px;
@@ -521,7 +521,9 @@ button:hover {
 
 #button-container button {
   margin-top: 16px;
+  font-size: 20px;
 }
+
 
 .footer {
   position: absolute;
@@ -621,6 +623,7 @@ button:hover {
 #screen-share button {
   width: 76%;
   margin-top: 16px;
+  font-size: 20px;
 }
 
 #copy-link {
