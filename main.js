@@ -94,6 +94,14 @@ if (recipientName) {
     .forEach(el => el.textContent = recipientName + ",");
 }
 
+/* Hide footer option - append ?hideFooter=True to link */
+const hideFooter = params.get("hideFooter");
+if (hideFooter) {
+  document.querySelectorAll(".footer").forEach(footer => {
+    footer.style.display = "none";
+  });
+}
+
 /* Start game */
 document.getElementById("start-bake").addEventListener("click", function () {
   Sound.unlock();
