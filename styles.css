@@ -79,7 +79,7 @@ h1 {
 button {
   height: 48px;
   font-family: 'Indie Flower', 'Arial', sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   background-color: var(--pastel-pink);
   color: var(--dark-brown);
   margin-top: 36px;
