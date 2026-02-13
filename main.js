@@ -1,7 +1,8 @@
-// Sound manager - Chrome Android fix (with user gesture persistence)
+// Sound manager - Nuclear Chrome fix
 const Sound = (() => {
   let audioContext = null;
   let unlocked = false;
+  let audioElements = {};
 
   function unlock() {
     if (unlocked) return;
@@ -11,79 +12,67 @@ const Sound = (() => {
       try {
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
       } catch(e) {
-        console.log('AudioContext creation failed:', e);
+        console.log('AudioContext failed:', e);
       }
     }
 
-    // Resume AudioContext
+    // Resume it
     if (audioContext && audioContext.state === 'suspended') {
-      audioContext.resume().then(() => {
-        console.log('AudioContext resumed');
+      audioContext.resume();
+    }
+
+    // CRITICAL: Prime ALL audio elements during this user gesture
+    document.querySelectorAll('audio').forEach(audio => {
+      audioElements[audio.id] = audio;
+      audio.load();
+      
+      // Play them all silently to unlock (Chrome requirement)
+      audio.volume = 0;
+      audio.play().then(() => {
+        audio.pause();
+        audio.currentTime = 0;
+        console.log('Primed:', audio.id);
+      }).catch(e => {
+        console.log('Prime failed:', audio.id);
       });
-    }
+    });
 
-    const a = document.getElementById("sound-unlock");
-    if (a) {
-      a.load();
-      a.muted = true;
-      a.currentTime = 0;
-
-      const p = a.play();
-      if (p) {
-        p.then(() => {
-          a.pause();
-          a.currentTime = 0;
-          a.muted = false;
-          unlocked = true;
-          console.log('Sound unlocked!');
-        }).catch((err) => {
-          console.log('Unlock error:', err);
-          a.muted = false;
-          unlocked = true;
-        });
-      }
-    } else {
-      unlocked = true;
-    }
+    unlocked = true;
+    console.log('All audio unlocked!');
   }
 
   function play(id, volume = 1) {
-    const a = document.getElementById(id);
+    const a = audioElements[id] || document.getElementById(id);
     if (!a) {
-      console.log('Audio element not found:', id);
+      console.log('Audio not found:', id);
       return;
     }
 
     if (!unlocked) {
-      console.log('Sound not unlocked yet');
-      return;
+      console.log('Not unlocked, attempting unlock...');
+      unlock();
     }
 
-    // CRITICAL: Don't call load() here - it causes issues on Chrome
     a.volume = volume;
     a.currentTime = 0;
-
+    
     const promise = a.play();
     if (promise !== undefined) {
       promise
-        .then(() => {
-          console.log('✓ Playing:', id);
-        })
-        .catch((error) => {
-          console.log('✗ Play failed:', id, error.name);
-        });
+        .then(() => console.log('✓ Playing:', id))
+        .catch((error) => console.log('✗ Failed:', id, error.name));
     }
   }
 
   function stop(id) {
-    const a = document.getElementById(id);
+    const a = audioElements[id] || document.getElementById(id);
     if (!a) return;
     a.pause();
     a.currentTime = 0;
   }
 
   function stopAll() {
-    document.querySelectorAll("audio").forEach(a => {
+    Object.values(audioElements).forEach(a => {
       a.pause();
       a.currentTime = 0;
     });
@@ -92,9 +81,14 @@ const Sound = (() => {
   return { unlock, play, stop, stopAll };
 })();
 
-// Unlock on any interaction
-document.addEventListener("touchstart", () => Sound.unlock(), { once: true, passive: true });
-document.addEventListener("click", () => Sound.unlock(), { once: true });
+// Aggressive unlock on first touch
+document.addEventListener("touchstart", () => {
+  Sound.unlock();
+}, { once: true, passive: true });
+
+document.addEventListener("click", () => {
+  Sound.unlock();
+}, { once: true });
 
 /* Get and display custom name */
 const params = new URLSearchParams(window.location.search);
@@ -107,7 +101,7 @@ if (recipientName) {
 
 /* Start game */
 document.getElementById("start-bake").addEventListener("click", function () {
-  Sound.unlock();
+  Sound.unlock(); // Force unlock here too
   document.getElementById("screen-intro").classList.remove("active");
   document.getElementById("screen-game").classList.add("active");
 });
@@ -135,16 +129,15 @@ interact('#pie-container').dropzone({
   overlap: 0.75,
 
   ondrop: function (event) {
-    // Play sounds IMMEDIATELY in the event handler (no setTimeout!)
     if (event.relatedTarget.id === 'inventory-dough') {
       document.getElementById('inventory-dough').classList.add('hidden')
       document.getElementById('pie-dough').classList.remove('hidden')
-      Sound.play('sound-crust', 1); // Direct call, no timeout
+      Sound.play('sound-crust', 1);
     }
     if (event.relatedTarget.id === 'inventory-strawberry') {
       document.getElementById('inventory-strawberry').classList.add('hidden')
       document.getElementById('pie-jam').classList.remove('hidden')
-      Sound.play('sound-strawberries', 0.1); // Direct call
+      Sound.play('sound-strawberries', 0.1);
       if (!document.getElementById('pie-butter-no-jam').classList.contains('hidden')){
         document.getElementById('pie-butter').classList.remove('hidden')
       }
@@ -154,7 +147,7 @@ interact('#pie-container').dropzone({
     }
     if (event.relatedTarget.id === 'inventory-butter') {
       document.getElementById('inventory-butter').classList.add('hidden')
-      Sound.play('sound-butter', 0.5); // Direct call
+      Sound.play('sound-butter', 0.5);
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
          document.getElementById('pie-butter-no-jam').classList.remove('hidden')
       } else {
@@ -163,7 +156,7 @@ interact('#pie-container').dropzone({
     }
     if (event.relatedTarget.id === 'inventory-sugar') {
       document.getElementById('inventory-sugar').classList.add('hidden')
-      Sound.play('sound-sugar', 0.6); // Direct call
+      Sound.play('sound-sugar', 0.6);
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
           document.getElementById('pie-sugar-no-jam').classList.remove('hidden')
       } else {
@@ -173,7 +166,7 @@ interact('#pie-container').dropzone({
     if (event.relatedTarget.id === 'inventory-crust') {
       document.getElementById('inventory-crust').classList.add('hidden')
       document.getElementById('pie-crust').classList.remove('hidden')
-      Sound.play('sound-crust'); // Direct call
+      Sound.play('sound-crust');
     }
     checkSlideInventory();
   }
@@ -184,6 +177,10 @@ interact('.inventory-item')
     inertia: true,
     autoScroll: true,
     listeners: {
+      start(event) {
+        // Unlock at drag start
+        Sound.unlock();
+      },
       move: dragMoveListener, 
       end (event) {
         if (!event.dropzone) {
@@ -356,13 +353,8 @@ btn.addEventListener("click", () => {
   });
 });
 
-// Button click sound - make sure element exists!
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("button");
   if (!btn) return;
-  
-  // Check if sound-button-click element exists
-  if (document.getElementById("sound-button-click")) {
-    Sound.play("sound-button-click", 0.3);
-  }
+  Sound.play("sound-button-click", 0.3);
 });
