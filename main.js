@@ -1,65 +1,45 @@
+// Sound manager - for mobile bug
 const Sound = (() => {
-  const ids = [
-    "sound-crust",
-    "sound-strawberries",
-    "sound-butter",
-    "sound-sugar",
-    "sound-screen-slide",
-    "sound-success",
-    "sound-oven-slide-in",
-    "sound-timer",
-    "sound-fun",
-    "sound-stab-cat",
-    "sound-button-click",
-  ];
-
   let unlocked = false;
-
-  function els() {
-    return ids
-      .map(id => document.getElementById(id))
-      .filter(Boolean);
-  }
 
   function unlock() {
     if (unlocked) return;
     unlocked = true;
 
-    // iOS unlock: play() must happen inside a trusted gesture.
-    els().forEach(a => {
-      try {
-        const prevVol = a.volume;
-        a.volume = 0;
-        a.currentTime = 0;
+    const a = document.getElementById("sound-unlock");
+    if (!a) return;
 
-        const p = a.play();
-        if (p) {
-          p.then(() => {
-            a.pause();
-            a.currentTime = 0;
-            a.volume = prevVol;
-          }).catch(() => {
-            // Some files may fail; that's okay—unlock often still succeeds overall.
-            a.volume = prevVol;
-          });
-        } else {
-          a.volume = prevVol;
-        }
-      } catch {}
-    });
+    // iOS-safe unlock: muted + play inside a real gesture
+    a.muted = true;
+    a.currentTime = 0;
+
+    const p = a.play();
+    if (p) {
+      p.then(() => {
+        a.pause();
+        a.currentTime = 0;
+        a.muted = false;
+      }).catch(() => {
+        // Even if it fails, we attempted unlock inside a gesture
+        a.muted = false;
+      });
+    } else {
+      // Older browsers: just reset
+      a.pause();
+      a.currentTime = 0;
+      a.muted = false;
+    }
   }
 
   function play(id, volume = 1) {
     const a = document.getElementById(id);
     if (!a) return;
 
-    a.pause();          // helps with rapid replays on iOS
+    a.pause();          // helps iOS for rapid replays
     a.currentTime = 0;
     a.volume = volume;
 
-    a.play().catch(() => {
-      // If this fails on mobile, it's almost always "not unlocked yet"
-    });
+    a.play().catch(() => {});
   }
 
   function stop(id) {
@@ -95,8 +75,6 @@ document.getElementById("start-bake").addEventListener("click", function () {
   document.getElementById("screen-intro").classList.remove("active");
   document.getElementById("screen-game").classList.add("active");
 });
-document.addEventListener("pointerdown", Sound.unlock, { once: true });
-document.addEventListener("touchstart", Sound.unlock, { once: true });
 
 /* Check if all ingredients have been used*/
 function allSlotsHidden(i) {
