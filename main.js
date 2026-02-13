@@ -1,4 +1,4 @@
-// Sound manager - PROPER mobile fix
+// Sound manager - Chrome Android fix (with user gesture persistence)
 const Sound = (() => {
   let audioContext = null;
   let unlocked = false;
@@ -6,67 +6,72 @@ const Sound = (() => {
   function unlock() {
     if (unlocked) return;
 
-    // Create AudioContext on first interaction (required for iOS)
+    // Create AudioContext
     if (!audioContext) {
-      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      try {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      } catch(e) {
+        console.log('AudioContext creation failed:', e);
+      }
     }
 
-    // Resume AudioContext (iOS requirement)
-    if (audioContext.state === 'suspended') {
-      audioContext.resume();
+    // Resume AudioContext
+    if (audioContext && audioContext.state === 'suspended') {
+      audioContext.resume().then(() => {
+        console.log('AudioContext resumed');
+      });
     }
 
     const a = document.getElementById("sound-unlock");
-    if (!a) {
-      unlocked = true;
-      return;
-    }
-
-    // iOS-safe unlock: muted + play inside a real gesture
-    a.muted = true;
-    a.currentTime = 0;
-
-    const p = a.play();
-    if (p) {
-      p.then(() => {
-        a.pause();
-        a.currentTime = 0;
-        a.muted = false;
-        unlocked = true;
-      }).catch(() => {
-        a.muted = false;
-        unlocked = true;
-      });
-    } else {
-      a.pause();
+    if (a) {
+      a.load();
+      a.muted = true;
       a.currentTime = 0;
-      a.muted = false;
+
+      const p = a.play();
+      if (p) {
+        p.then(() => {
+          a.pause();
+          a.currentTime = 0;
+          a.muted = false;
+          unlocked = true;
+          console.log('Sound unlocked!');
+        }).catch((err) => {
+          console.log('Unlock error:', err);
+          a.muted = false;
+          unlocked = true;
+        });
+      }
+    } else {
       unlocked = true;
     }
   }
 
   function play(id, volume = 1) {
-    // Don't even try if not unlocked
-    if (!unlocked) {
-      console.log('Sound not unlocked yet');
-      return;
-    }
-
     const a = document.getElementById(id);
     if (!a) {
       console.log('Audio element not found:', id);
       return;
     }
 
-    a.pause();
-    a.currentTime = 0;
+    if (!unlocked) {
+      console.log('Sound not unlocked yet');
+      return;
+    }
+
+    // CRITICAL: Don't call load() here - it causes issues on Chrome
     a.volume = volume;
+    a.currentTime = 0;
 
     const promise = a.play();
     if (promise !== undefined) {
-      promise.catch((error) => {
-        console.log('Play failed:', id, error);
-      });
+      promise
+        .then(() => {
+          console.log('✓ Playing:', id);
+        })
+        .catch((error) => {
+          console.log('✗ Play failed:', id, error.name);
+        });
     }
   }
 
@@ -87,16 +92,9 @@ const Sound = (() => {
   return { unlock, play, stop, stopAll };
 })();
 
-// CRITICAL: Unlock on ANY user interaction
-const unlockOnInteraction = () => {
-  Sound.unlock();
-};
-
-// Listen to ALL possible interaction events
-document.addEventListener("touchstart", unlockOnInteraction, { once: true, passive: true });
-document.addEventListener("touchend", unlockOnInteraction, { once: true, passive: true });
-document.addEventListener("click", unlockOnInteraction, { once: true });
-document.addEventListener("pointerdown", unlockOnInteraction, { once: true });
+// Unlock on any interaction
+document.addEventListener("touchstart", () => Sound.unlock(), { once: true, passive: true });
+document.addEventListener("click", () => Sound.unlock(), { once: true });
 
 /* Get and display custom name */
 const params = new URLSearchParams(window.location.search);
@@ -130,25 +128,23 @@ function checkSlideInventory() {
   }
 }
 
-
 /* Game drag and drop behavior */
 
 interact('#pie-container').dropzone({
   accept: '#inventory-dough, #inventory-butter, #inventory-strawberry, #inventory-sugar, #inventory-crust',
   overlap: 0.75,
 
-  
   ondrop: function (event) {
+    // Play sounds IMMEDIATELY in the event handler (no setTimeout!)
     if (event.relatedTarget.id === 'inventory-dough') {
       document.getElementById('inventory-dough').classList.add('hidden')
       document.getElementById('pie-dough').classList.remove('hidden')
-      // Use setTimeout to ensure sound plays after drop completes
-      setTimeout(() => Sound.play('sound-crust', 1), 0);
+      Sound.play('sound-crust', 1); // Direct call, no timeout
     }
     if (event.relatedTarget.id === 'inventory-strawberry') {
       document.getElementById('inventory-strawberry').classList.add('hidden')
       document.getElementById('pie-jam').classList.remove('hidden')
-      setTimeout(() => Sound.play('sound-strawberries', 0.1), 0);
+      Sound.play('sound-strawberries', 0.1); // Direct call
       if (!document.getElementById('pie-butter-no-jam').classList.contains('hidden')){
         document.getElementById('pie-butter').classList.remove('hidden')
       }
@@ -158,7 +154,7 @@ interact('#pie-container').dropzone({
     }
     if (event.relatedTarget.id === 'inventory-butter') {
       document.getElementById('inventory-butter').classList.add('hidden')
-      setTimeout(() => Sound.play('sound-butter', 0.5), 0);
+      Sound.play('sound-butter', 0.5); // Direct call
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
          document.getElementById('pie-butter-no-jam').classList.remove('hidden')
       } else {
@@ -166,8 +162,8 @@ interact('#pie-container').dropzone({
       }   
     }
     if (event.relatedTarget.id === 'inventory-sugar') {
-    document.getElementById('inventory-sugar').classList.add('hidden')
-    setTimeout(() => Sound.play('sound-sugar', 0.6), 0);
+      document.getElementById('inventory-sugar').classList.add('hidden')
+      Sound.play('sound-sugar', 0.6); // Direct call
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
           document.getElementById('pie-sugar-no-jam').classList.remove('hidden')
       } else {
@@ -177,7 +173,7 @@ interact('#pie-container').dropzone({
     if (event.relatedTarget.id === 'inventory-crust') {
       document.getElementById('inventory-crust').classList.add('hidden')
       document.getElementById('pie-crust').classList.remove('hidden')
-      setTimeout(() => Sound.play('sound-crust'), 0);
+      Sound.play('sound-crust'); // Direct call
     }
     checkSlideInventory();
   }
@@ -190,10 +186,10 @@ interact('.inventory-item')
     listeners: {
       move: dragMoveListener, 
       end (event) {
-      if (!event.dropzone) {
-        resetPosition(event.target)
+        if (!event.dropzone) {
+          resetPosition(event.target)
+        }
       }
-    }
     },
   })
 
@@ -273,18 +269,14 @@ document.getElementById("no").addEventListener("click", () => {
   }, 2000);
 });
 
-
 /* RESET GAME */
-
 function resetGame() {
-
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active", "slide"));
   document.getElementById("screen-intro").classList.add("active");
 
   const screenEnd = document.getElementById("screen-end");
   delete screenEnd.dataset.state;
-  screenEnd.classList.remove("slide");       
-
+  screenEnd.classList.remove("slide");
 
   document.getElementById("cat-sad").classList.remove("grow");
   void document.getElementById("cat-sad").offsetWidth;
@@ -364,8 +356,13 @@ btn.addEventListener("click", () => {
   });
 });
 
+// Button click sound - make sure element exists!
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("button");
   if (!btn) return;
-  Sound.play("sound-button-click", 0.3);
+  
+  // Check if sound-button-click element exists
+  if (document.getElementById("sound-button-click")) {
+    Sound.play("sound-button-click", 0.3);
+  }
 });
