@@ -21,7 +21,10 @@ body {
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  border-left: solid .5px #4f301f;
+  border-right: solid .5px #4f301f;
 }
+
 
 .screen {
   display: none;
