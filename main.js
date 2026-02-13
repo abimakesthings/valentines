@@ -94,9 +94,9 @@ document.getElementById("start-bake").addEventListener("click", function () {
   Sound.unlock();
   document.getElementById("screen-intro").classList.remove("active");
   document.getElementById("screen-game").classList.add("active");
-  document.addEventListener("pointerdown", Sound.unlock, { once: true });
-  document.addEventListener("touchstart", Sound.unlock, { once: true });
 });
+document.addEventListener("pointerdown", Sound.unlock, { once: true });
+document.addEventListener("touchstart", Sound.unlock, { once: true });
 
 /* Check if all ingredients have been used*/
 function allSlotsHidden(i) {
@@ -127,12 +127,12 @@ interact('#pie-container').dropzone({
     if (event.relatedTarget.id === 'inventory-dough') {
       document.getElementById('inventory-dough').classList.add('hidden')
       document.getElementById('pie-dough').classList.remove('hidden')
-      sound.play('sound-crust', 1);
+      Sound.play('sound-crust', 1);
     }
     if (event.relatedTarget.id === 'inventory-strawberry') {
       document.getElementById('inventory-strawberry').classList.add('hidden')
       document.getElementById('pie-jam').classList.remove('hidden')
-      sound.play('sound-strawberries', 0.1);
+      Sound.play('sound-strawberries', 0.1);
       if (!document.getElementById('pie-butter-no-jam').classList.contains('hidden')){
         document.getElementById('pie-butter').classList.remove('hidden')
       }
@@ -142,7 +142,7 @@ interact('#pie-container').dropzone({
     }
     if (event.relatedTarget.id === 'inventory-butter') {
       document.getElementById('inventory-butter').classList.add('hidden')
-      sound.play('sound-butter', 0.5);
+      Sound.play('sound-butter', 0.5);
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
          document.getElementById('pie-butter-no-jam').classList.remove('hidden')
       } else {
@@ -151,7 +151,7 @@ interact('#pie-container').dropzone({
     }
     if (event.relatedTarget.id === 'inventory-sugar') {
     document.getElementById('inventory-sugar').classList.add('hidden')
-    sound.play('sound-sugar', 0.6);
+    Sound.play('sound-sugar', 0.6);
       if (document.getElementById('pie-jam').classList.contains('hidden')) {
           document.getElementById('pie-sugar-no-jam').classList.remove('hidden')
       } else {
@@ -161,7 +161,7 @@ interact('#pie-container').dropzone({
     if (event.relatedTarget.id === 'inventory-crust') {
       document.getElementById('inventory-crust').classList.add('hidden')
       document.getElementById('pie-crust').classList.remove('hidden')
-      sound.play('sound-crust');
+      Sound.play('sound-crust');
     }
     checkSlideInventory();
   }
@@ -200,12 +200,12 @@ function resetPosition(el) {
 document.getElementById("bake-in-oven").addEventListener("click", function () {
   document.getElementById("pie-oven-container").classList.remove("hidden");
   document.getElementById("pie-oven-container").classList.add("slide");
-  sound.play('sound-oven-slide-in', .1);
+  Sound.play('sound-oven-slide-in', .1);
   document.getElementById("bake-in-oven").classList.add("hidden");
   document.getElementById("oven-filled").style.opacity = "1";
   document.getElementById("timer-hand").style.transform = "rotate(360deg)"; //3s delay
   setTimeout(() => {
-    sound.play('sound-timer', 1);
+    Sound.play('sound-timer', 1);
   }, 2000);  
   setTimeout(() => {
     document.getElementById("pie-baked").classList.remove("hidden");
@@ -216,10 +216,10 @@ document.getElementById("bake-in-oven").addEventListener("click", function () {
   }, 6000); 
   setTimeout(() => {
     document.getElementById("screen-question").classList.add("slide");
-    sound.play('sound-screen-slide', 1);
+    Sound.play('sound-screen-slide', 1);
    }, 6100); 
   setTimeout(() => {
-      sound.play('sound-success', 1);
+      Sound.play('sound-success', 1);
    }, 6500);
   setTimeout(() => {
     document.getElementById("screen-game").classList.remove("active");
@@ -232,7 +232,7 @@ document.querySelectorAll(".decision").forEach(btn => {
     document.getElementById("screen-end").classList.add("active");
     setTimeout(() => {
       document.getElementById("screen-end").classList.add("slide");
-      sound.play('sound-screen-slide', 1);
+      Sound.play('sound-screen-slide', 1);
     }, 100);
     setTimeout(() => {
       document.getElementById("screen-question").classList.remove("active", "slide");
@@ -245,14 +245,14 @@ const screenEnd = document.getElementById("screen-end");
 document.getElementById("yes").addEventListener("click", () => {
   screenEnd.dataset.state = "accepted";
   setTimeout(() => {
-    sound.play('sound-fun', 0.4);
+    Sound.play('sound-fun', 0.4);
   }, 2000);
 });
 
 document.getElementById("no").addEventListener("click", () => {
   screenEnd.dataset.state = "rejected";
   setTimeout(() => {
-    sound.play('sound-stab-cat', .5);
+    Sound.play('sound-stab-cat', .5);
     document.getElementById("cat-sad").classList.add("grow");
   }, 2000);
 });
@@ -360,18 +360,3 @@ btn.addEventListener("click", () => {
   });
 });
 
-/* sounds */
-function sound.play(id, volume = 1) {
-  const sound = document.getElementById(id);
-  if (!sound) return;
-
-  sound.volume = volume;  
-  sound.currentTime = 0;
-  sound.play().catch(() => {});
-}
-
-document.addEventListener("click", (e) => {
-  if (e.target.tagName === "BUTTON") {
-    sound.play('button-click', 1);
-  }
-});
