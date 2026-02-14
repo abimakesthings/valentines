@@ -264,7 +264,6 @@ button:hover {
   flex-direction: column;
   transition: 1300ms cubic-bezier(0.22, 1, 0.36, 1) 400ms;
   transform: translateY(0);
-  overflow: hidden;
 }
 
 #inventory.slide {
@@ -323,6 +322,7 @@ button:hover {
 .inventory-item {
   width: auto;
   touch-action: none;
+  z-index: 20;
 }
 
 #inventory-dough {
