@@ -15,10 +15,10 @@
   </head>
 
   <body>
-    <main id="app" >
+    <main class="app">
       <!--- Intro screen -->
       <section id="screen-intro" class="screen active">
-        <div id="text-container">
+        <div class="text-container">
           <h1 class="name-text"></h1>
           <h1>Something sweet is waiting</h1>
         </div>
@@ -26,32 +26,32 @@
       </section>
       <!--- Game screen -->
       <section id="screen-game" class="screen">
-        <section id="wall-container">
-        <img id="background-left" src="assets/game/background-left.PNG"/>
-        <img id="window" src="assets/game/window.PNG"/>
+        <section class="wall-container">
+          <img class="background-left" src="assets/game/background-left.PNG"/>
+          <img class="window" src="assets/game/window.PNG"/>
         </section>
-        <section id="counter-container">
-          <img id="counter" src="assets/game/counter.PNG"/>
+        <section class="counter-container">
+          <img class="counter" src="assets/game/counter.PNG"/>
           <div id="pie-container">
             <div class="pie hidden" id="pie-oven-container">
               <img class="pie-oven" src="assets/game/oven-empty.PNG"/>
               <img class="pie-oven" id="oven-filled" src="assets/game/oven-filled.PNG"/>
-              <img id="timer-base" src="assets/game/timer-base.PNG"/>
+              <img class="timer-base" src="assets/game/timer-base.PNG"/>
               <img id="timer-hand" src="assets/game/timer-hand.PNG"/>
             </div>
             <img class="pie hidden" id="pie-crust" src="assets/game/pie-crust.PNG"/>
             <img class="pie hidden" id="pie-baked" src="assets/game/pie-baked.PNG"/>
             <img class="pie hidden" id="pie-sugar" src="assets/game/pie-sugar.PNG"/>
-            <img class="pie hidden" id="pie-butter" src="assets/game/pie-butter.PNG"/>  
-            <img class="pie hidden" id="pie-jam" src="assets/game/pie-jam.PNG"/>  
-            <img class="pie hidden" id="pie-sugar-no-jam" src="assets/game/pie-sugar-no-jam.PNG"/>     
-            <img class="pie hidden" id="pie-butter-no-jam" src="assets/game/pie-butter-no-jam.PNG"/> 
+            <img class="pie hidden" id="pie-butter" src="assets/game/pie-butter.PNG"/>
+            <img class="pie hidden" id="pie-jam" src="assets/game/pie-jam.PNG"/>
+            <img class="pie hidden" id="pie-sugar-no-jam" src="assets/game/pie-sugar-no-jam.PNG"/>
+            <img class="pie hidden" id="pie-butter-no-jam" src="assets/game/pie-butter-no-jam.PNG"/>
             <img class="pie hidden" id="pie-dough" src="assets/game/pie-dough.PNG"/>
-            <img class="pie" id="pie-empty" src="assets/game/pie-empty.PNG"/>  
+            <img class="pie" id="pie-empty" src="assets/game/pie-empty.PNG"/>
           </div>
         </section>
         <section id="inventory">
-          <p class="inventory-label" id="instructions">Drag ingredients onto pie</p>
+          <p class="inventory-label instructions">Drag ingredients onto pie</p>
           <div id="inventory-slots-container">
             <div class="inventory-slots" id="inventory-slots-1">
               <div class="inventory-slot">
@@ -69,7 +69,7 @@
               <div class="inventory-slot">
                 <div class="inventory-item-container">
                   <img class="inventory-item" id="inventory-butter" src="assets/game/inventory-butter.PNG"/>
-                  </div>
+                </div>
                 <p class="inventory-label">Butter</p>
               </div>
               <div class="inventory-slot">
@@ -92,21 +92,21 @@
         <button class="hidden" id="bake-in-oven">Bake in oven</button>
       </section>
       <section id="screen-question" class="screen">
-        <h1 class="name-text" id="name-text-end"></h1>
-        <img id="pie-cloth" src="assets/end/pie-cloth.PNG"/>
-        <div id="button-group">
+        <h1 class="name-text"></h1>
+        <img class="pie-cloth" src="assets/end/pie-cloth.PNG"/>
+        <div class="button-group">
           <button class="decision" id="yes">Yes</button>
           <button class="decision" id="no">No</button>
         </div>
-        <div id="roses-container">
-            <img id="rose-left" src="assets/end/rose-left.PNG"/>
-            <img id="rose-right" src="assets/end/rose-right.PNG"/>
-        </div> 
+        <div class="roses-container">
+          <img class="rose-left" src="assets/end/rose-left.PNG"/>
+          <img class="rose-right" src="assets/end/rose-right.PNG"/>
+        </div>
       </section>
       <section id="screen-end" class="screen">
         <div class="cat-container happy">
-          <img id="hearts" src="assets/end/hearts.gif">
-          <img id="cat-happy" src="assets/end/cat-happy.PNG">
+          <img class="hearts" src="assets/end/hearts.gif">
+          <img class="cat-happy" src="assets/end/cat-happy.PNG">
         </div>
         <div class="cat-container sad">
           <img id="cat-sad" src="assets/end/cat-angry.PNG">
@@ -115,7 +115,7 @@
         <h2 class="happy">Happy Valentine's Day!</h2>
         <h1 class="sad">Wrong answer</h1>
         <h2 class="sad">You sure about that?</h2>
-        <div id="button-container">
+        <div class="button-container">
           <button id="share">Share</button>
           <button class="replay">Replay</button>
         </div>
@@ -126,30 +126,29 @@
               <img src="assets/end/youtube.jpg"/>
               Youtube
             </a>
-            <a target="_blank"rel="noopener noreferrer" href="https://www.instagram.com/abi.makes.things">
+            <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/abi.makes.things">
               <img src="assets/end/insta.jpg"/>
               Instagram
             </a>
-            </div>
           </div>
         </div>
       </section>
       <section id="screen-share" class="screen">
-        <h3>Share<br/>with a loved one</h3>  
-        <div id="input-container">
+        <h3>Share<br/>with a loved one</h3>
+        <div class="input-container">
           <label for="name-input">Recipient name</label>
-         <input 
-          type="text" 
-          id="name-input" 
-          placeholder="Name to appear in message"
-          maxlength="20"
-        />
+          <input
+            type="text"
+            id="name-input"
+            placeholder="Name to appear in message"
+            maxlength="20"
+          />
         </div>
         <button id="copy-link">
-          <span id="copy-text">Copy link</span>
-          <span id="check">✓ Link copied</span>
+          <span class="copy-text">Copy link</span>
+          <span class="check">✓ Link copied</span>
         </button>
-        <div id="bottom">
+        <div class="bottom">
           <button class="replay">Replay</button>
           <div class="footer">
             <p>Made with love by @abi.makes.things</p>
@@ -162,7 +161,6 @@
                 <img src="assets/end/insta.jpg"/>
                 Instagram
               </a>
-              </div>
             </div>
           </div>
         </div>
