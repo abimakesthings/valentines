@@ -47,14 +47,13 @@ body {
 
 /* screen intro */
 
-#screen-intro {
+.screen-intro {
   width: 100%;
   background-image: url(assets/intro/intro-bg.PNG);
   background-size: cover;
   align-items: center;
   background-position: top;
   flex-direction: column;
-  height: 100%;
 }
 
 .text-container {
@@ -70,7 +69,7 @@ h1 {
   font-weight: 700;
 }
 
-#screen-intro h1 {
+.screen-intro h1 {
   font-size: 4em;
   transform: rotate(-10deg);
 }
